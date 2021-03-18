@@ -21,7 +21,7 @@ private:
 
     bool _initWindow();
     bool _initVulkan();
-    void _createInstance();
+    VkResult _createInstance();
 public:
     Screen();
     ~Screen();
@@ -71,13 +71,36 @@ bool Screen::_initWindow()
 
 bool Screen::_initVulkan()
 {
-    _createInstance();
+    VkResult result = _createInstance();
+    if (result != VK_SUCCESS)
+    {
+        std::cout << "SCREEN_H: VULKAN Instance has not created: Error> " << result << std::endl;
+        return false;
+    }
     return true;
 }
 
-void Screen::_createInstance()
+VkResult Screen::_createInstance()
 {
+    VkApplicationInfo appInfo{};
+    appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+    appInfo.pApplicationName = "Transparent Sprite";
+    appInfo.applicationVersion = VK_MAKE_VERSION(1,0, 0);
+    appInfo.pEngineName = "No Engine";
+    appInfo.apiVersion = VK_API_VERSION_1_0;
 
+    uint32_t glfwExtensionCount = 0;
+    const char** glfwExtensions;
+    glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
+
+    VkInstanceCreateInfo createInfo{};
+    createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+    createInfo.pApplicationInfo = &appInfo;
+    createInfo.enabledExtensionCount = glfwExtensionCount;
+    createInfo.ppEnabledExtensionNames = glfwExtensions;
+    createInfo.enabledLayerCount = 0;
+
+    return vkCreateInstance(&createInfo, nullptr, &_instance);
 }
 
 #endif
