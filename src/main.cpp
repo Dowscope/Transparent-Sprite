@@ -22,7 +22,7 @@ void cleanUp()
 int main(int argc, char const *argv[])
 {
     screen = new Screen();
-    if(screen->hasInitiallized == false) {return 1;}
+    if(!screen->hasWindowInitiallized || !screen->hasVulkanInitialized) {return 1;}
 
     mainLoop();
     cleanUp();
