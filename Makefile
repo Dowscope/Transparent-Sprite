@@ -1,5 +1,5 @@
-CFLAGS = -std=c++17
-LDFLAGS = -lstdc++ -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
+CFLAGS = -std=c++20
+LDFLAGS = -lstdc++ -lglfw
 	
 main:
 	gcc $(CFLAGS) src/*.cpp -o game.run $(LDFLAGS)
